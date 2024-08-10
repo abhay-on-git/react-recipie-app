@@ -2,16 +2,20 @@ import { Link } from "react-router-dom";
 import { useParams , useNavigate } from "react-router-dom";
 import { recipieContext } from "../utils/RecipieContext";
 import { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getRecipesFromApi } from "../features/actions/recipeActions";
 
 const Details = () => {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {dishes,setDishes} = useContext(recipieContext)
+    const {dishes} = useSelector((state)=> state.dishes)
     const { id } = useParams();
     const dish = dishes.find((dish) => dish.id === id);
 
     const deleteRecipieHandler = ()=>{
         const newDishes = dishes.filter((dish) => dish.id !== id);
-        setDishes(newDishes);
+        localStorage.setItem('dishes',JSON.stringify(newDishes))
+        dispatch(getRecipesFromApi())
         navigate('/')
     }
 

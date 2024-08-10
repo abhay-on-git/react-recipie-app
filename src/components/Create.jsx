@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
-import { recipieContext } from "../utils/RecipieContext";
 import { useNavigate } from "react-router-dom";
 import { nanoid } from "nanoid";
+import { useDispatch, useSelector } from "react-redux";
+import { getRecipesFromApi } from "../features/actions/recipeActions";
 
 const Create = () => {
   const [title, setTitle] = useState('');
@@ -9,12 +10,14 @@ const Create = () => {
   const [description, setDescription] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [instructions, setInstructions] = useState('');
-  const { dishes, setDishes } = useContext(recipieContext);
   const navigate = useNavigate();
+  const {dishes} = useSelector((state)=>state.dishes)
+  const dispatch = useDispatch();
+  console.log(dishes)
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const recipe = {
+    const newRecipe = {
       title,
       image,
       description,
@@ -22,8 +25,8 @@ const Create = () => {
       instructions,
       id: nanoid(),
     };
-    console.log(recipe,'rrrrrrr')
-    setDishes([...dishes, recipe]);
+    localStorage.setItem('dishes',JSON.stringify([...dishes,newRecipe]))
+    dispatch(getRecipesFromApi())
     navigate('/recipes');
   };
 

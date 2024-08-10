@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import Card from "./Card";
 import { Link, useLocation } from "react-router-dom";
-import { recipieContext } from "../utils/RecipieContext";
+import { useSelector } from "react-redux";
 
 const Recipes = () => {
-    const { dishes } = useContext(recipieContext);
+    const {dishes} = useSelector((state)=>state.dishes)
+    console.log(dishes,'dddddddd')
     const { pathname } = useLocation();
 
     return (
